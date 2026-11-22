@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Star, GitFork, GitCommit, ArrowUpRight, Flame } from 'lucide-react';
+import { BookOpen, Star, GitFork, GitCommit, ArrowUpRight, Flame, Orbit } from 'lucide-react';
 import { GithubIcon } from '../components/Icons';
 import { portfolioData } from '../data/portfolioData';
 
@@ -20,22 +20,23 @@ export default function GithubSection() {
 
   const colors = [
     'bg-white/[0.04]',
-    'bg-accentBlue/30 border border-accentBlue/40',
-    'bg-accentBlue/60 border border-accentBlue/70 shadow-[0_0_8px_rgba(56,189,248,0.3)]',
-    'bg-accentBlue border border-white shadow-[0_0_12px_rgba(56,189,248,0.8)]',
+    'bg-accentViolet/30 border border-accentViolet/40',
+    'bg-accentViolet/60 border border-accentViolet/70 shadow-purple-glow',
+    'bg-accentPurple border border-white shadow-[0_0_12px_rgba(168,85,247,0.8)]',
   ];
 
   return (
-    <section id="github" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto select-none">
+    <section id="github" className="relative py-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto select-none">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-16">
         <motion.span
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-xs font-mono uppercase tracking-[0.25em] text-accentBlue mb-2"
+          className="text-xs font-mono uppercase tracking-[0.25em] text-accentViolet mb-2 flex items-center gap-1.5"
         >
-          05 / CODE ACTIVITY
+          <Orbit className="w-3.5 h-3.5" />
+          <span>05 / DEVELOPER CONTROL ROOM</span>
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
@@ -44,7 +45,7 @@ export default function GithubSection() {
           transition={{ delay: 0.1 }}
           className="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-luxury-silver"
         >
-          GITHUB INTEGRATION
+          GITHUB & TELEMETRY
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 15 }}
@@ -53,7 +54,7 @@ export default function GithubSection() {
           transition={{ delay: 0.2 }}
           className="text-textMuted text-sm max-w-xl mt-3 font-sans"
         >
-          Repositories, open-source work, and code commit history for @{github.username}.
+          Control room telemetry for @{github.username}: repositories, commit activity, and open-source progress.
         </motion.p>
       </div>
 
@@ -75,7 +76,7 @@ export default function GithubSection() {
               transition={{ delay: idx * 0.08 }}
               className="p-5 rounded-2xl luxury-glass border-white/5 flex flex-col items-center text-center"
             >
-              <div className="p-2 rounded-xl bg-white/5 text-accentBlue mb-3">
+              <div className="p-2 rounded-xl bg-white/5 text-accentViolet mb-3">
                 <Icon className="w-4 h-4" />
               </div>
               <span className="text-2xl sm:text-3xl font-extrabold font-display text-white">
@@ -98,13 +99,13 @@ export default function GithubSection() {
       >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 mb-5 border-b border-white/10 gap-3">
           <div className="flex items-center gap-3">
-            <GithubIcon className="w-5 h-5 text-accentBlue" />
+            <GithubIcon className="w-5 h-5 text-accentViolet" />
             <div>
               <h3 className="font-display font-bold text-lg text-white">
-                Contribution Activity
+                Contribution Telemetry
               </h3>
               <p className="text-xs font-mono text-textMuted">
-                Active Year Progression · @{github.username}
+                Activity Progression · @{github.username}
               </p>
             </div>
           </div>
@@ -113,10 +114,10 @@ export default function GithubSection() {
             href={github.profileUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-mono text-accentSilver hover:text-white px-3.5 py-1.5 rounded-full border border-white/10 hover:border-accentBlue/50 transition-colors w-fit"
+            className="inline-flex items-center gap-1.5 text-xs font-mono text-accentSilver hover:text-white px-3.5 py-1.5 rounded-full border border-white/10 hover:border-accentViolet/50 transition-colors w-fit"
           >
             <span>VIEW GITHUB PROFILE</span>
-            <ArrowUpRight className="w-3.5 h-3.5 text-accentBlue" />
+            <ArrowUpRight className="w-3.5 h-3.5 text-accentViolet" />
           </a>
         </div>
 
@@ -156,14 +157,14 @@ export default function GithubSection() {
             href={repo.url}
             target="_blank"
             rel="noreferrer"
-            className="p-5 rounded-2xl luxury-glass border-white/5 hover:border-accentBlue/40 transition-all duration-300 group flex flex-col justify-between"
+            className="p-5 rounded-2xl luxury-glass border-white/5 hover:border-accentViolet/40 transition-all duration-300 group flex flex-col justify-between"
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <h4 className="font-bold text-white text-base group-hover:text-accentBlue transition-colors">
+                <h4 className="font-bold text-white text-base group-hover:text-accentViolet transition-colors">
                   {repo.name}
                 </h4>
-                <span className="text-[10px] font-mono text-accentBlue px-2 py-0.5 rounded-full bg-accentBlue/10">
+                <span className="text-[10px] font-mono text-accentViolet px-2 py-0.5 rounded-full bg-accentViolet/10">
                   Public
                 </span>
               </div>
@@ -174,7 +175,7 @@ export default function GithubSection() {
 
             <div className="flex items-center justify-between pt-3 border-t border-white/5 text-xs font-mono text-textMuted">
               <span className="flex items-center gap-1.5 text-accentSilver">
-                <span className="w-2 h-2 rounded-full bg-accentBlue" />
+                <span className="w-2 h-2 rounded-full bg-accentViolet" />
                 {repo.language}
               </span>
 

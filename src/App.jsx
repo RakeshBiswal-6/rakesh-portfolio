@@ -16,7 +16,7 @@ export default function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#08090C] text-[#F8FAFC] relative overflow-x-hidden selection:bg-accentBlue/20 selection:text-accentBlue">
+    <div className="min-h-screen bg-[#05060A] text-[#F8FAFC] relative overflow-x-hidden selection:bg-accentViolet/25 selection:text-accentViolet">
       {/* Complete Persistent 3D WebGL Environment */}
       <ThreeCanvas />
 

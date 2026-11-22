@@ -8,12 +8,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        darkBg: '#08090C',        // Deep Charcoal / Midnight Black
-        darkSurface: '#0E1015',   // Dark Graphite
-        darkCard: '#13161D',      // Card Slate
-        darkBorder: '#20242F',    // Subtle metallic border
-        accentBlue: '#38BDF8',    // Soft Electric Blue
-        accentViolet: '#818CF8',  // Subtle Violet
+        darkBg: '#05060A',        // Midnight Navy / Black
+        darkNavy: '#07080E',      // Deep Workstation Graphite
+        darkSurface: '#0B0D16',   // Surface Dark
+        darkCard: '#10131F',      // Floating Glass Card
+        darkBorder: '#1E2335',    // Subtle metallic frame
+        accentPurple: '#A855F7',  // Electric Purple
+        accentViolet: '#8B5CF6',  // Soft Violet
+        accentBlue: '#38BDF8',    // Subtle Electric Blue
         accentSilver: '#E2E8F0',  // Pure Silver
         textMuted: '#94A3B8',     // Soft Slate Grey
       },
@@ -24,8 +26,8 @@ export default {
       },
       boxShadow: {
         'luxury': '0 20px 50px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.05) inset',
-        'subtle-glow': '0 0 30px rgba(56, 189, 248, 0.12)',
-        'violet-glow': '0 0 30px rgba(129, 140, 248, 0.12)',
+        'purple-glow': '0 0 35px rgba(168, 85, 247, 0.18)',
+        'blue-glow': '0 0 35px rgba(56, 189, 248, 0.18)',
       },
     },
   },

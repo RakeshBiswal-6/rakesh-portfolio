@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { GraduationCap, Briefcase, Award, CheckCircle } from 'lucide-react';
+import { GraduationCap, Briefcase, Award, CheckCircle, Orbit } from 'lucide-react';
 import { portfolioData } from '../data/portfolioData';
 
 export default function Education() {
@@ -14,16 +14,17 @@ export default function Education() {
   };
 
   return (
-    <section id="education" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto select-none">
+    <section id="education" className="relative py-32 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto select-none">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-16">
         <motion.span
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-xs font-mono uppercase tracking-[0.25em] text-accentBlue mb-2"
+          className="text-xs font-mono uppercase tracking-[0.25em] text-accentViolet mb-2 flex items-center gap-1.5"
         >
-          04 / 3D TIMELINE
+          <Orbit className="w-3.5 h-3.5" />
+          <span>04 / ARCHITECTURAL GALLERY</span>
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
@@ -41,7 +42,7 @@ export default function Education() {
           transition={{ delay: 0.2 }}
           className="text-textMuted text-sm max-w-xl mt-3 font-sans"
         >
-          Academic milestones, machine learning internship experience, and technical accomplishments.
+          Formal academic background, machine learning internship experience, and technical milestones.
         </motion.p>
       </div>
 
@@ -59,15 +60,15 @@ export default function Education() {
               className="relative pl-6 sm:pl-10"
             >
               {/* 3D Timeline Marker */}
-              <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#08090C] border-2 border-accentBlue shadow-[0_0_12px_rgba(56,189,248,0.7)]" />
+              <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[#05060A] border-2 border-accentViolet shadow-purple-glow" />
 
               {/* Date Indicator */}
-              <div className="sm:absolute sm:-left-32 sm:top-1 text-xs font-mono text-accentBlue font-semibold mb-2 sm:mb-0">
+              <div className="sm:absolute sm:-left-32 sm:top-1 text-xs font-mono text-accentViolet font-semibold mb-2 sm:mb-0">
                 {item.period}
               </div>
 
               {/* Card */}
-              <div className="p-6 rounded-3xl luxury-glass border-white/10 hover:border-accentBlue/30 transition-all">
+              <div className="p-6 rounded-3xl luxury-glass border-white/10 hover:border-accentViolet/30 transition-all">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <span className="text-[10px] font-mono uppercase tracking-widest text-accentSilver px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10">
                     {item.type}

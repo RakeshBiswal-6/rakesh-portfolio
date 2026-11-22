@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Cpu, Layers, Sparkles, Orbit } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Orbit, Layers, Sparkles } from 'lucide-react';
 import Interactive3DObject from '../components/Interactive3DObject';
 import { portfolioData } from '../data/portfolioData';
 
@@ -12,16 +12,17 @@ export default function Skills() {
   const currentDomain = skills3D.find((d) => d.id === selectedDomain) || skills3D[0];
 
   return (
-    <section id="skills" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto select-none">
+    <section id="skills" className="relative py-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto select-none">
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-16">
         <motion.span
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-xs font-mono uppercase tracking-[0.25em] text-accentBlue mb-2"
+          className="text-xs font-mono uppercase tracking-[0.25em] text-accentViolet mb-2 flex items-center gap-1.5"
         >
-          02 / 3D TECHNOLOGY WORLD
+          <Orbit className="w-3.5 h-3.5" />
+          <span>02 / 3D TECHNOLOGY UNIVERSE</span>
         </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
@@ -30,7 +31,7 @@ export default function Skills() {
           transition={{ delay: 0.1 }}
           className="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-luxury-silver"
         >
-          SKILLS & ENVIRONMENTS
+          SKILLS & TECHNOLOGIES
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 15 }}
@@ -39,7 +40,7 @@ export default function Skills() {
           transition={{ delay: 0.2 }}
           className="text-textMuted text-sm max-w-xl mt-3 font-sans"
         >
-          Interact with any technology module below to inspect its architecture and 3D geometry representation.
+          Select any technology to inspect its 3D architectural representation and domain description.
         </motion.p>
       </div>
 
@@ -60,7 +61,7 @@ export default function Skills() {
                   : 'luxury-glass text-textMuted hover:text-white border-white/5'
               }`}
             >
-              <span>{item.id}.</span>
+              <span className="text-accentViolet font-semibold">{item.id}.</span>
               <span>{item.domain}</span>
             </button>
           );
@@ -79,10 +80,10 @@ export default function Skills() {
         >
           <div className="flex items-center justify-between text-[10px] font-mono tracking-widest text-textMuted uppercase">
             <span className="flex items-center gap-1.5">
-              <Orbit className="w-3.5 h-3.5 text-accentBlue" />
-              <span>GEOMETRIC INSPECTION</span>
+              <Orbit className="w-3.5 h-3.5 text-accentViolet" />
+              <span>GEOMETRIC ARTIFACT</span>
             </span>
-            <span className="text-accentBlue uppercase font-semibold">
+            <span className="text-accentViolet uppercase font-semibold">
               {activeTech.geometry}
             </span>
           </div>
@@ -90,7 +91,7 @@ export default function Skills() {
           <div className="w-56 h-56 mx-auto relative my-2">
             <Interactive3DObject
               shape={activeTech.geometry}
-              color={selectedDomain === '04' ? 0x818CF8 : 0x38BDF8}
+              color={selectedDomain === '04' ? 0xA855F7 : 0x38BDF8}
               size={1.3}
             />
           </div>
@@ -109,14 +110,14 @@ export default function Skills() {
         <div className="lg:col-span-7 flex flex-col justify-between space-y-4">
           <div className="p-5 rounded-2xl luxury-glass border-white/5 flex items-center justify-between">
             <div>
-              <span className="text-[10px] font-mono tracking-widest text-accentBlue uppercase block mb-1">
+              <span className="text-[10px] font-mono tracking-widest text-accentViolet uppercase block mb-1">
                 DOMAIN {currentDomain.id}
               </span>
               <h3 className="text-xl font-bold font-display text-white">
                 {currentDomain.domain}
               </h3>
             </div>
-            <span className="text-xs font-mono text-textMuted">
+            <span className="text-xs font-mono text-textMuted hidden sm:inline-block">
               {currentDomain.shortDesc}
             </span>
           </div>
@@ -130,7 +131,7 @@ export default function Skills() {
                   onClick={() => setActiveTech(tech)}
                   className={`p-5 rounded-2xl text-left transition-all duration-300 relative group overflow-hidden ${
                     isSelected
-                      ? 'luxury-glass border-accentBlue/50 bg-[#161A24] shadow-[0_10px_30px_rgba(56,189,248,0.12)]'
+                      ? 'luxury-glass border-accentViolet/50 bg-[#16132A] shadow-purple-glow'
                       : 'luxury-glass border-white/5 hover:border-white/20 hover:bg-white/[0.02]'
                   }`}
                 >
@@ -145,7 +146,7 @@ export default function Skills() {
                     <span
                       className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full ${
                         isSelected
-                          ? 'bg-accentBlue/20 text-accentBlue border border-accentBlue/30'
+                          ? 'bg-accentViolet/20 text-accentViolet border border-accentViolet/30'
                           : 'bg-white/5 text-textMuted'
                       }`}
                     >
