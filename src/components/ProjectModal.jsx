@@ -73,20 +73,10 @@ export default function ProjectModal({ project, onClose }) {
               href={project.githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto px-4 py-2 rounded-full text-xs font-mono text-accentSilver border border-white/10 hover:border-white/30 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full text-xs font-mono text-accentSilver border border-white/10 hover:border-accentBlue/40 hover:bg-white/5 transition-all flex items-center justify-center gap-2"
             >
               <GithubIcon className="w-3.5 h-3.5 text-accentBlue" />
-              <span>GITHUB REPO</span>
-            </a>
-
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto px-5 py-2 rounded-full text-xs font-mono font-semibold text-darkBg bg-white hover:bg-accentSilver transition-all flex items-center justify-center gap-1.5 shadow-luxury"
-            >
-              <span>LIVE DEMO</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <span>GITHUB REPOSITORY</span>
             </a>
           </div>
         </motion.div>

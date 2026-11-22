@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ThreeCanvas from './components/ThreeCanvas';
-import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import ResumeModal from './components/ResumeModal';
 import Hero from './sections/Hero';
@@ -19,9 +18,6 @@ export default function App() {
     <div className="min-h-screen bg-[#08090C] text-[#F8FAFC] relative overflow-x-hidden selection:bg-accentBlue/20 selection:text-accentBlue">
       {/* Complete Persistent 3D WebGL Environment */}
       <ThreeCanvas />
-
-      {/* Luxury Custom Follower Cursor */}
-      <CustomCursor />
 
       {/* Floating 3D Navigation Bar */}
       <Navbar onOpenResume={() => setResumeOpen(true)} />

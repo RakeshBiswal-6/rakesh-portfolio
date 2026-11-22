@@ -58,10 +58,3 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
-/* Desktop custom cursor pointer reset */
-@media (pointer: fine) {
-  body {
-    cursor: default;
-  }
-}

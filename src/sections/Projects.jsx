@@ -102,24 +102,12 @@ export default function Projects() {
                 <span>GITHUB REPO</span>
               </a>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setActiveModalProject(project)}
-                  className="px-3.5 py-1.5 rounded-full text-xs font-mono text-accentSilver border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all"
-                >
-                  DETAILS
-                </button>
-
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="px-4 py-1.5 rounded-full text-xs font-mono tracking-wider text-darkBg font-semibold bg-white hover:bg-accentSilver transition-all flex items-center gap-1 shadow-sm"
-                >
-                  <span>LIVE DEMO</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
+              <button
+                onClick={() => setActiveModalProject(project)}
+                className="px-4 py-1.5 rounded-full text-xs font-mono text-accentSilver border border-white/10 hover:border-accentBlue/40 hover:bg-white/5 transition-all"
+              >
+                DETAILS
+              </button>
             </div>
           </motion.article>
         ))}
