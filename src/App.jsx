@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ThreeCanvas from './components/ThreeCanvas';
+import IsometricHUD from './components/IsometricHUD';
 import Navbar from './components/Navbar';
 import ResumeModal from './components/ResumeModal';
 import Hero from './sections/Hero';
@@ -21,6 +22,9 @@ export default function App() {
 
       {/* Floating 3D Navigation Bar */}
       <Navbar onOpenResume={() => setResumeOpen(true)} />
+
+      {/* Awwwards Inspired Isometric HUD */}
+      <IsometricHUD />
 
       {/* Main Experience Flow */}
       <main className="relative z-10">

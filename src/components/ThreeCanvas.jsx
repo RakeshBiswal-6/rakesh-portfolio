@@ -20,9 +20,9 @@ export default function ThreeCanvas() {
 
     if (!isWebGLAvailable()) return;
 
-    // Scene & Camera
+    // Scene & Camera - Isometric cinematic angle
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x08090C, 0.035);
+    scene.fog = new THREE.FogExp2(0x060709, 0.028);
 
     const camera = new THREE.PerspectiveCamera(
       45,
@@ -30,7 +30,9 @@ export default function ThreeCanvas() {
       0.1,
       1000
     );
-    camera.position.set(0, 0, 16);
+    // Positioned at an elegant isometric elevation
+    camera.position.set(0, 10, 22);
+    camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -40,142 +42,203 @@ export default function ThreeCanvas() {
     renderer.setSize(mount.clientWidth, mount.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.15;
     mount.appendChild(renderer.domElement);
 
-    // Cinematic Lighting (Luxury palette: Soft electric blue, subtle violet, clean white)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    // Studio Lighting: Restrained, luxury lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
     scene.add(ambientLight);
 
-    const blueLight = new THREE.DirectionalLight(0x38BDF8, 2.2);
-    blueLight.position.set(12, 12, 10);
-    scene.add(blueLight);
+    const mainLight = new THREE.DirectionalLight(0xE2E8F0, 1.8);
+    mainLight.position.set(10, 25, 15);
+    scene.add(mainLight);
 
-    const violetLight = new THREE.DirectionalLight(0x818CF8, 1.8);
-    violetLight.position.set(-12, -8, 8);
-    scene.add(violetLight);
+    const cyanRimLight = new THREE.DirectionalLight(0x38BDF8, 2.5);
+    cyanRimLight.position.set(-15, 8, -5);
+    scene.add(cyanRimLight);
 
-    const topWhiteLight = new THREE.PointLight(0xffffff, 1.5, 40);
-    topWhiteLight.position.set(0, 15, 5);
-    scene.add(topWhiteLight);
+    const subtleFillLight = new THREE.DirectionalLight(0x6366F1, 1.2);
+    subtleFillLight.position.set(0, -10, 10);
+    scene.add(subtleFillLight);
 
-    // Central Hero 3D Sculpture: Refined Metallic Glass Icosahedron & Orbiting Rings
-    const sculptureGroup = new THREE.Group();
-    scene.add(sculptureGroup);
+    // 1. ISOMETRIC ARCHITECTURAL GRID FLOOR (Inspired by Merouane Bali reference)
+    const gridGroup = new THREE.Group();
+    scene.add(gridGroup);
+    gridGroup.position.y = -4.5;
+    gridGroup.rotation.x = -Math.PI / 2;
 
-    // Core Gem Geometry
-    const coreGeometry = new THREE.IcosahedronGeometry(3.6, 1);
-    const coreMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x131620,
-      metalness: 0.85,
-      roughness: 0.18,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
-      wireframe: false,
-      reflectivity: 0.9,
+    const gridSize = 50;
+    const gridDivisions = 35;
+    const gridHelper = new THREE.GridHelper(gridSize, gridDivisions, 0x1E293B, 0x0F172A);
+    gridHelper.rotation.x = Math.PI / 2;
+    gridGroup.add(gridHelper);
+
+    // Dotted Matrix intersections on floor
+    const dotCount = 400;
+    const dotPositions = new Float32Array(dotCount * 3);
+    let dotIdx = 0;
+    const step = gridSize / gridDivisions;
+    for (let x = -gridSize / 2; x <= gridSize / 2; x += step * 2) {
+      for (let y = -gridSize / 2; y <= gridSize / 2; y += step * 2) {
+        if (dotIdx < dotCount * 3) {
+          dotPositions[dotIdx] = x;
+          dotPositions[dotIdx + 1] = y;
+          dotPositions[dotIdx + 2] = 0.05;
+          dotIdx += 3;
+        }
+      }
+    }
+    const dotGeo = new THREE.BufferGeometry();
+    dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+    const dotMat = new THREE.PointsMaterial({
+      size: 0.12,
+      color: 0x38BDF8,
+      transparent: true,
+      opacity: 0.35,
     });
-    const coreMesh = new THREE.Mesh(coreGeometry, coreMaterial);
-    sculptureGroup.add(coreMesh);
+    const floorDots = new THREE.Points(dotGeo, dotMat);
+    gridGroup.add(floorDots);
 
-    // Wireframe Outer Cage for intricate architectural depth
-    const wireframeGeometry = new THREE.IcosahedronGeometry(4.1, 1);
-    const wireframeMaterial = new THREE.MeshBasicMaterial({
+    // 2. CONNECTED CIRCUIT BUS LINES (Connecting central node to peripheral points)
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0x38BDF8,
+      transparent: true,
+      opacity: 0.5,
+    });
+
+    const createCircuitPath = (x1, y1, x2, y2) => {
+      const midX = (x1 + x2) / 2;
+      const points = [
+        new THREE.Vector3(x1, y1, 0.1),
+        new THREE.Vector3(midX, y1, 0.1),
+        new THREE.Vector3(midX, y2, 0.1),
+        new THREE.Vector3(x2, y2, 0.1),
+      ];
+      const geo = new THREE.BufferGeometry().setFromPoints(points);
+      return new THREE.Line(geo, lineMat);
+    };
+
+    gridGroup.add(createCircuitPath(0, 0, 14, 12));
+    gridGroup.add(createCircuitPath(0, 0, -14, 12));
+    gridGroup.add(createCircuitPath(0, 0, 15, -12));
+    gridGroup.add(createCircuitPath(0, 0, -15, -12));
+    gridGroup.add(createCircuitPath(0, 0, 0, 16));
+    gridGroup.add(createCircuitPath(0, 0, 0, -16));
+
+    // Peripheral Node Terminals
+    const nodeGeo = new THREE.BoxGeometry(0.8, 0.8, 0.2);
+    const nodeMat = new THREE.MeshStandardMaterial({
+      color: 0x0F172A,
+      metalness: 0.9,
+      roughness: 0.2,
+    });
+    const nodeGlowMat = new THREE.MeshBasicMaterial({
+      color: 0x38BDF8,
+      wireframe: true,
+    });
+
+    const addTerminalNode = (x, y) => {
+      const node = new THREE.Mesh(nodeGeo, nodeMat);
+      node.position.set(x, y, 0.15);
+      const glow = new THREE.Mesh(nodeGeo, glowMat);
+      glow.scale.setScalar(1.1);
+      node.add(glow);
+      gridGroup.add(node);
+    };
+
+    const glowMat = new THREE.MeshBasicMaterial({ color: 0x38BDF8, wireframe: true });
+    addTerminalNode(14, 12);
+    addTerminalNode(-14, 12);
+    addTerminalNode(15, -12);
+    addTerminalNode(-15, -12);
+
+    // 3. CENTRAL PLATFORM (Pedestal)
+    const baseGeo = new THREE.BoxGeometry(3.5, 3.5, 0.4);
+    const baseMat = new THREE.MeshStandardMaterial({
+      color: 0x0B0F19,
+      metalness: 0.8,
+      roughness: 0.25,
+    });
+    const centralBase = new THREE.Mesh(baseGeo, baseMat);
+    centralBase.position.set(0, 0, 0.2);
+    gridGroup.add(centralBase);
+
+    // Glowing rim around central base
+    const rimGeo = new THREE.BoxGeometry(3.7, 3.7, 0.05);
+    const rimMat = new THREE.MeshBasicMaterial({
+      color: 0x38BDF8,
+      transparent: true,
+      opacity: 0.7,
+    });
+    const centralRim = new THREE.Mesh(rimGeo, rimMat);
+    centralRim.position.set(0, 0, 0.45);
+    gridGroup.add(centralRim);
+
+    // 4. FLOATING SILVER & GLASS 3D CORE (Sculpture with restrained, calm rotation)
+    const coreGroup = new THREE.Group();
+    scene.add(coreGroup);
+    coreGroup.position.set(0, 0.8, 0);
+
+    // Silver Brushed Icosahedron
+    const coreGeo = new THREE.IcosahedronGeometry(2.4, 1);
+    const coreMat = new THREE.MeshPhysicalMaterial({
+      color: 0x1A202C,
+      metalness: 0.9,
+      roughness: 0.15,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      reflectivity: 0.95,
+    });
+    const coreMesh = new THREE.Mesh(coreGeo, coreMat);
+    coreGroup.add(coreMesh);
+
+    // Subtle Electric Blue Inner Wireframe Cage
+    const wireGeo = new THREE.IcosahedronGeometry(2.65, 1);
+    const wireMat = new THREE.MeshBasicMaterial({
       color: 0x38BDF8,
       wireframe: true,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.28,
     });
-    const wireframeMesh = new THREE.Mesh(wireframeGeometry, wireframeMaterial);
-    sculptureGroup.add(wireframeMesh);
+    const wireMesh = new THREE.Mesh(wireGeo, wireMat);
+    coreGroup.add(wireMesh);
 
-    // Concentric Gyro Rings
-    const ring1Geo = new THREE.TorusGeometry(5.2, 0.04, 16, 120);
-    const ringMat1 = new THREE.MeshStandardMaterial({
+    // Concentric Glass / Silver Orbital Ring
+    const ringGeo = new THREE.TorusGeometry(3.8, 0.025, 16, 100);
+    const ringMat = new THREE.MeshStandardMaterial({
       color: 0xE2E8F0,
       metalness: 0.95,
       roughness: 0.2,
     });
-    const ring1 = new THREE.Mesh(ring1Geo, ringMat1);
-    ring1.rotation.x = Math.PI / 3;
-    sculptureGroup.add(ring1);
+    const ring1 = new THREE.Mesh(ringGeo, ringMat);
+    ring1.rotation.x = Math.PI / 2.8;
+    coreGroup.add(ring1);
 
-    const ring2Geo = new THREE.TorusGeometry(6.0, 0.03, 16, 120);
-    const ringMat2 = new THREE.MeshStandardMaterial({
-      color: 0x818CF8,
-      metalness: 0.9,
-      roughness: 0.3,
-    });
-    const ring2 = new THREE.Mesh(ring2Geo, ringMat2);
-    ring2.rotation.y = Math.PI / 4;
-    sculptureGroup.add(ring2);
+    const ring2 = new THREE.Mesh(ringGeo, ringMat);
+    ring2.rotation.y = Math.PI / 3;
+    ring2.scale.setScalar(1.15);
+    coreGroup.add(ring2);
 
-    // Floating Geometric Field (3D elements throughout the space)
-    const floatingGroup = new THREE.Group();
-    scene.add(floatingGroup);
-
-    const geometries = [
-      new THREE.OctahedronGeometry(0.8, 0),
-      new THREE.TetrahedronGeometry(0.7, 0),
-      new THREE.IcosahedronGeometry(0.6, 0),
-      new THREE.BoxGeometry(0.7, 0.7, 0.7),
-    ];
-
-    const floatMaterials = [
-      new THREE.MeshStandardMaterial({ color: 0x1E222D, metalness: 0.8, roughness: 0.2 }),
-      new THREE.MeshStandardMaterial({ color: 0x38BDF8, metalness: 0.9, roughness: 0.1, wireframe: true }),
-      new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.7, roughness: 0.3 }),
-      new THREE.MeshStandardMaterial({ color: 0x818CF8, metalness: 0.85, roughness: 0.2, wireframe: true }),
-    ];
-
-    const floatingObjects = [];
-    for (let i = 0; i < 35; i++) {
-      const geo = geometries[i % geometries.length];
-      const mat = floatMaterials[i % floatMaterials.length];
-      const mesh = new THREE.Mesh(geo, mat);
-
-      // Spread along the deep vertical viewport
-      mesh.position.set(
-        (Math.random() - 0.5) * 36,
-        (Math.random() - 0.5) * 45,
-        (Math.random() - 0.5) * 20 - 5
-      );
-
-      mesh.rotation.set(
-        Math.random() * Math.PI,
-        Math.random() * Math.PI,
-        Math.random() * Math.PI
-      );
-
-      floatingGroup.add(mesh);
-      floatingObjects.push({
-        mesh,
-        rotSpeedX: (Math.random() - 0.5) * 0.015,
-        rotSpeedY: (Math.random() - 0.5) * 0.015,
-        initialY: mesh.position.y,
-        floatSpeed: 0.5 + Math.random() * 0.8,
-      });
+    // Minimal floating stardust
+    const dustCount = 280;
+    const dustPositions = new Float32Array(dustCount * 3);
+    for (let i = 0; i < dustCount * 3; i += 3) {
+      dustPositions[i] = (Math.random() - 0.5) * 40;
+      dustPositions[i + 1] = Math.random() * 25 - 2;
+      dustPositions[i + 2] = (Math.random() - 0.5) * 30;
     }
-
-    // Subtle Particle Stardust
-    const starsCount = 700;
-    const starPositions = new Float32Array(starsCount * 3);
-    for (let i = 0; i < starsCount * 3; i += 3) {
-      starPositions[i] = (Math.random() - 0.5) * 50;
-      starPositions[i + 1] = (Math.random() - 0.5) * 60;
-      starPositions[i + 2] = (Math.random() - 0.5) * 30 - 8;
-    }
-    const starGeo = new THREE.BufferGeometry();
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-    const starMat = new THREE.PointsMaterial({
-      size: 0.08,
+    const dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPositions, 3));
+    const dustMat = new THREE.PointsMaterial({
+      size: 0.07,
       color: 0xE2E8F0,
       transparent: true,
-      opacity: 0.45,
+      opacity: 0.35,
     });
-    const starField = new THREE.Points(starGeo, starMat);
-    scene.add(starField);
+    const dustField = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustField);
 
-    // Mouse & Scroll Tracking
+    // Restrained, Calm Mouse & Scroll Parallax
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -184,19 +247,18 @@ export default function ThreeCanvas() {
     let targetScrollY = 0;
 
     const handleMouseMove = (e) => {
-      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 1.5;
-      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 1.5;
+      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 0.8;
+      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 0.8;
     };
 
     const handleScroll = () => {
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-      targetScrollY = maxScroll > 0 ? (window.scrollY / maxScroll) * 35 : 0;
+      targetScrollY = maxScroll > 0 ? (window.scrollY / maxScroll) * 12 : 0;
     };
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
 
-    // Window Resize
     const handleResize = () => {
       if (!mount) return;
       camera.aspect = mount.clientWidth / mount.clientHeight;
@@ -206,7 +268,7 @@ export default function ThreeCanvas() {
 
     window.addEventListener('resize', handleResize);
 
-    // Animation Loop
+    // Animation Loop: Restrained, smooth, deliberate motion (not fast spinning)
     let animationFrameId;
     const clock = new THREE.Clock();
 
@@ -214,39 +276,28 @@ export default function ThreeCanvas() {
       animationFrameId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth interpolation
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
-      scrollY += (targetScrollY - scrollY) * 0.05;
+      // Smooth lag interpolation
+      mouseX += (targetMouseX - mouseX) * 0.04;
+      mouseY += (targetMouseY - mouseY) * 0.04;
+      scrollY += (targetScrollY - scrollY) * 0.04;
 
-      // Sculpture Rotation
-      coreMesh.rotation.y = elapsed * 0.15;
-      coreMesh.rotation.x = Math.sin(elapsed * 0.2) * 0.2;
+      // Deliberate, calm rotation of the sculpture
+      coreMesh.rotation.y = elapsed * 0.08;
+      coreMesh.rotation.x = Math.sin(elapsed * 0.1) * 0.1;
 
-      wireframeMesh.rotation.y = -elapsed * 0.12;
-      wireframeMesh.rotation.z = elapsed * 0.08;
+      wireMesh.rotation.y = -elapsed * 0.06;
+      wireMesh.rotation.z = elapsed * 0.04;
 
-      ring1.rotation.x = Math.PI / 3 + elapsed * 0.25;
-      ring1.rotation.y = elapsed * 0.15;
+      ring1.rotation.z = elapsed * 0.05;
+      ring2.rotation.x = Math.PI / 3 + elapsed * 0.04;
 
-      ring2.rotation.y = Math.PI / 4 - elapsed * 0.2;
-      ring2.rotation.z = elapsed * 0.1;
+      // Subtle breathing levitation
+      coreGroup.position.y = 0.8 + Math.sin(elapsed * 0.8) * 0.25 - (scrollY * 0.3);
 
-      // Parallax interaction with mouse
-      sculptureGroup.position.x = mouseX * 2.2;
-      sculptureGroup.position.y = -mouseY * 2.2 - (scrollY * 0.4);
-      sculptureGroup.rotation.y = mouseX * 0.8;
-      sculptureGroup.rotation.x = mouseY * 0.8;
-
-      // Floating items animation
-      floatingObjects.forEach((item) => {
-        item.mesh.rotation.x += item.rotSpeedX;
-        item.mesh.rotation.y += item.rotSpeedY;
-        item.mesh.position.y = item.initialY + Math.sin(elapsed * item.floatSpeed) * 0.6;
-      });
-
-      // Camera responds to scroll depth
-      camera.position.y = -scrollY * 0.25;
+      // Camera parallax responding with high restraint
+      camera.position.x = mouseX * 2.5;
+      camera.position.y = 10 - (mouseY * 1.5) - (scrollY * 0.2);
+      camera.lookAt(0, -scrollY * 0.2, 0);
 
       renderer.render(scene, camera);
     };
@@ -261,25 +312,27 @@ export default function ThreeCanvas() {
       if (mount && renderer.domElement) {
         mount.removeChild(renderer.domElement);
       }
-      coreGeometry.dispose();
-      coreMaterial.dispose();
-      wireframeGeometry.dispose();
-      wireframeMaterial.dispose();
-      ring1Geo.dispose();
-      ringMat1.dispose();
-      ring2Geo.dispose();
-      ringMat2.dispose();
-      starGeo.dispose();
-      starMat.dispose();
+      coreGeo.dispose();
+      coreMat.dispose();
+      wireGeo.dispose();
+      wireMat.dispose();
+      ringGeo.dispose();
+      ringMat.dispose();
+      gridHelper.dispose();
+      dotGeo.dispose();
+      dotMat.dispose();
+      lineMat.dispose();
+      dustGeo.dispose();
+      dustMat.dispose();
       renderer.dispose();
     };
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none select-none z-0 overflow-hidden">
-      <div ref={mountRef} className="w-full h-full opacity-80" />
-      {/* Cinematic Dark Vignette overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#08090C]/60 via-transparent to-[#08090C] pointer-events-none" />
+      <div ref={mountRef} className="w-full h-full opacity-85" />
+      {/* Subtle vignette gradient fade for readable typography */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#060709]/70 via-transparent to-[#060709] pointer-events-none" />
     </div>
   );
 }
