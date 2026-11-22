@@ -8,40 +8,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#030712', // deep cosmic obsidian
-        surface: '#0B0F19',
-        surfaceLight: '#111827',
-        neonCyan: '#00F5FF',
-        neonMagenta: '#FF007F',
-        neonPurple: '#8B5CF6',
-        neonBlue: '#3B82F6',
-        neonGreen: '#10B981',
+        darkBg: '#08090C',        // Deep Charcoal / Midnight Black
+        darkSurface: '#0E1015',   // Dark Graphite
+        darkCard: '#13161D',      // Card Slate
+        darkBorder: '#20242F',    // Subtle metallic border
+        accentBlue: '#38BDF8',    // Soft Electric Blue
+        accentViolet: '#818CF8',  // Subtle Violet
+        accentSilver: '#E2E8F0',  // Pure Silver
+        textMuted: '#94A3B8',     // Soft Slate Grey
       },
       fontFamily: {
         sans: ['Space Grotesk', 'sans-serif'],
         mono: ['DM Mono', 'monospace'],
         display: ['Syne', 'sans-serif'],
       },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'cyber-gradient': 'linear-gradient(135deg, #00F5FF 0%, #8B5CF6 50%, #FF007F 100%)',
-        'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
-      },
-      animation: {
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float-slow': 'float 6s ease-in-out infinite',
-        'spin-slow': 'spin 18s linear infinite',
-        'glow-pulse': 'glowPulse 3s ease-in-out infinite alternate',
-      },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-15px)' },
-        },
-        glowPulse: {
-          '0%': { opacity: 0.4, filter: 'blur(20px)' },
-          '100%': { opacity: 0.8, filter: 'blur(35px)' },
-        }
+      boxShadow: {
+        'luxury': '0 20px 50px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.05) inset',
+        'subtle-glow': '0 0 30px rgba(56, 189, 248, 0.12)',
+        'violet-glow': '0 0 30px rgba(129, 140, 248, 0.12)',
       },
     },
   },

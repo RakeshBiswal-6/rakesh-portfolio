@@ -1,156 +1,122 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Sparkles, FolderGit2, Info, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ExternalLink, Layers, Sparkles, Eye } from 'lucide-react';
 import { GithubIcon } from '../components/Icons';
 import { portfolioData } from '../data/portfolioData';
 import ProjectModal from '../components/ProjectModal';
-import MagneticButton from '../components/MagneticButton';
 
 export default function Projects() {
-  const [filter, setFilter] = useState('all');
-  const [selectedProject, setSelectedProject] = useState(null);
   const { projects } = portfolioData;
-
-  const filteredProjects =
-    filter === 'all' ? projects : projects.filter((p) => p.category === filter);
+  const [activeModalProject, setActiveModalProject] = useState(null);
 
   return (
     <section id="projects" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto select-none">
-      {/* Background Section Ambient Glow */}
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-neonCyan/[0.04] rounded-full blur-[170px] pointer-events-none" />
-
       {/* Section Header */}
       <div className="flex flex-col items-center text-center mb-16">
-        <motion.div
+        <motion.span
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-neonCyan mb-3"
+          className="text-xs font-mono uppercase tracking-[0.25em] text-accentBlue mb-2"
         >
-          <FolderGit2 className="w-3.5 h-3.5" />
-          <span>PORTFOLIO OF WORK</span>
-        </motion.div>
+          03 / 3D SHOWCASE
+        </motion.span>
         <motion.h2
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
-          className="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-white"
+          className="text-3xl sm:text-5xl font-extrabold font-display tracking-tight text-luxury-silver"
         >
-          Featured <span className="text-gradient">Innovations</span>
+          FEATURED PROJECTS
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-gray-400 text-sm sm:text-base max-w-2xl mt-4 font-sans"
+          className="text-textMuted text-sm max-w-xl mt-3 font-sans"
         >
-          Engineered solutions bridging computer vision, machine learning models, and modern full-stack web platforms.
+          Engineered systems combining computer vision, predictive intelligence, and interactive 3D web interfaces.
         </motion.p>
       </div>
 
-      {/* Category Tabs */}
-      <div className="flex justify-center gap-2 mb-12">
-        {[
-          { id: 'all', label: 'All Projects' },
-          { id: 'aiml', label: 'AI & Machine Learning' },
-          { id: 'web', label: '3D Web & Interactive' },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setFilter(tab.id)}
-            className={`px-4 py-2 rounded-xl text-xs font-mono transition-all duration-200 ${
-              filter === tab.id
-                ? 'bg-gradient-to-r from-neonCyan to-neonMagenta text-white font-bold shadow-[0_0_15px_rgba(0,245,255,0.3)]'
-                : 'glass-panel text-gray-400 hover:text-white border-white/5'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Projects Showcase Cards Grid */}
+      {/* Projects Grid with 3D Tilt Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {filteredProjects.map((project, index) => (
+        {projects.map((project, idx) => (
           <motion.article
             key={project.id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="group relative rounded-3xl glass-panel border-white/10 hover:border-cyan-500/40 p-6 sm:p-7 flex flex-col justify-between transition-all duration-500 hover:shadow-[0_15px_40px_rgba(0,245,255,0.12)] overflow-hidden"
+            transition={{ duration: 0.6, delay: idx * 0.1 }}
+            className="group rounded-3xl luxury-glass border-white/10 hover:border-accentBlue/40 p-7 flex flex-col justify-between transition-all duration-500 hover:shadow-luxury relative overflow-hidden"
           >
-            {/* Top ambient color bar */}
-            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${project.gradient}`} />
+            {/* Top Sheen */}
+            <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-accentBlue/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            {/* Header info */}
             <div>
+              {/* Header Badges */}
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[11px] font-mono tracking-widest text-neonCyan uppercase px-2.5 py-1 rounded-full bg-neonCyan/10 border border-neonCyan/20">
-                  {project.badge}
+                <span className="text-[10px] font-mono uppercase tracking-widest text-accentBlue px-3 py-1 rounded-full bg-accentBlue/10 border border-accentBlue/20">
+                  {project.highlight}
                 </span>
 
-                <button
-                  onClick={() => setSelectedProject(project)}
-                  className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
-                  title="Inspect architecture"
-                >
-                  <Info className="w-4 h-4" />
-                </button>
+                <span className="text-[10px] font-mono text-textMuted">
+                  {project.metrics}
+                </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-xl sm:text-2xl font-bold font-display text-white group-hover:text-neonCyan transition-colors mb-3">
+              <h3 className="text-2xl font-bold font-display text-white group-hover:text-accentBlue transition-colors mb-3">
                 {project.title}
               </h3>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed font-sans mb-6">
-                {project.shortDescription}
+              <p className="text-xs sm:text-sm text-textMuted font-sans leading-relaxed mb-6">
+                {project.shortDesc}
               </p>
 
-              {/* Tech Tags */}
-              <div className="flex flex-wrap gap-1.5 mb-8">
-                {project.techStack.map((tech) => (
+              {/* Technology Tags */}
+              <div className="flex flex-wrap gap-2 mb-8">
+                {project.tech.map((t) => (
                   <span
-                    key={tech}
-                    className="px-2.5 py-1 rounded-md text-[11px] font-mono bg-white/5 text-gray-300 border border-white/5"
+                    key={t}
+                    className="px-2.5 py-1 rounded-lg text-[11px] font-mono bg-white/[0.03] text-accentSilver border border-white/5"
                   >
-                    {tech}
+                    {t}
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* Footer Buttons */}
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+            {/* Bottom Actions */}
+            <div className="pt-5 border-t border-white/10 flex items-center justify-between gap-3">
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-mono text-gray-300 hover:text-neonCyan transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-mono text-textMuted hover:text-white transition-colors"
               >
-                <GithubIcon className="w-4 h-4" />
-                <span>Source Code</span>
+                <GithubIcon className="w-4 h-4 text-accentBlue" />
+                <span>GITHUB REPO</span>
               </a>
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => setSelectedProject(project)}
-                  className="px-3.5 py-1.5 rounded-xl text-xs font-mono text-gray-300 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all"
+                  onClick={() => setActiveModalProject(project)}
+                  className="px-3.5 py-1.5 rounded-full text-xs font-mono text-accentSilver border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all"
                 >
-                  Details
+                  DETAILS
                 </button>
 
                 <a
-                  href={project.liveDemoUrl}
+                  href={project.liveUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-4 py-1.5 rounded-xl text-xs font-medium text-white bg-gradient-to-r from-neonCyan via-neonPurple to-neonMagenta hover:opacity-90 transition-all flex items-center gap-1 shadow-sm"
+                  className="px-4 py-1.5 rounded-full text-xs font-mono tracking-wider text-darkBg font-semibold bg-white hover:bg-accentSilver transition-all flex items-center gap-1 shadow-sm"
                 >
-                  <span>Live Demo</span>
+                  <span>LIVE DEMO</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               </div>
@@ -159,10 +125,10 @@ export default function Projects() {
         ))}
       </div>
 
-      {/* Inspect Project Modal */}
+      {/* Details Modal */}
       <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
+        project={activeModalProject}
+        onClose={() => setActiveModalProject(null)}
       />
     </section>
   );

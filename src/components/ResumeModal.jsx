@@ -1,71 +1,69 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Download, Copy, Check, FileText, Sparkles, ExternalLink, GraduationCap, Code } from 'lucide-react';
+import { X, Download, Copy, Check, FileText, GraduationCap, Code } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { portfolioData } from '../data/portfolioData';
 
 export default function ResumeModal({ isOpen, onClose }) {
   const [copied, setCopied] = useState(false);
+  const { personal, educationTimeline } = portfolioData;
 
   if (!isOpen) return null;
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText(portfolioData.owner.email);
+    navigator.clipboard.writeText(personal.contact.email);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleDownload = () => {
     confetti({
-      particleCount: 80,
+      particleCount: 70,
       spread: 60,
       origin: { y: 0.6 },
-      colors: ['#00F5FF', '#8B5CF6', '#FF007F'],
+      colors: ['#38BDF8', '#E2E8F0', '#818CF8'],
     });
 
-    // Generate a downloadable text/document resume file representation
-    const resumeContent = `
+    const content = `
 =====================================================
-RAKESH BISWAL — RESUME
-AI/ML Engineer & Full-Stack Developer
-Email: ${portfolioData.owner.email}
-GitHub: ${portfolioData.owner.githubUrl}
-LinkedIn: ${portfolioData.owner.linkedinUrl}
-Instagram: ${portfolioData.owner.instagramUrl}
-Location: ${portfolioData.owner.location}
+${personal.name.toUpperCase()} — RESUME
+${personal.tagline}
+Email: ${personal.contact.email}
+GitHub: ${personal.contact.github}
+LinkedIn: ${personal.contact.linkedin}
+Instagram: ${personal.contact.instagram}
 =====================================================
 
 EDUCATION:
-${portfolioData.owner.degree}
-${portfolioData.owner.university}
+${personal.education.degree}
+${personal.education.institution}, ${personal.education.location}
 
-TECHNICAL SPECIALIZATIONS:
-- Core Languages: Python, C++, Java, JavaScript (ES6+)
-- AI / Machine Learning: Machine Learning, Artificial Intelligence, OpenCV, Keras, Random Forest, RecSys
-- Frontend Development: React.js, HTML5, CSS3, Tailwind CSS, Responsive Design, Three.js
-- Backend & Databases: Node.js, Express, REST APIs, SQLite, Firebase
-- Tools & Workflows: Git, GitHub, VS Code, Linux
+TECHNICAL PROFILE:
+- Frontend: HTML, CSS, JavaScript, React.js
+- Backend: Node.js, Full-Stack Development
+- Programming: Java, C++, Python
+- AI/ML & Tools: Artificial Intelligence, Machine Learning, Git, GitHub, VS Code
 
-KEY PROJECTS:
+CORE PROJECTS:
 1. Face Recognition Attendance System
-   - Python, OpenCV, Keras, Flutter, Firebase, SQLite
+   - Python, OpenCV, Keras, Flutter/Web, Firebase, SQLite
 2. Air Quality Monitoring & Prediction
    - Python, Random Forest, Scikit-Learn, Plotly
 3. Movie Recommendation System
    - Python, Cosine Similarity, TMDB API
-4. 3D Particle Galaxy Portfolio
-   - React.js, Three.js, GSAP, Tailwind CSS
+4. Immersive 3D Personal Developer Portfolio
+   - React.js, Three.js, R3F, Tailwind CSS
 
-EXPERIENCE & ACTIVITIES:
+MILESTONES & ACTIVITIES:
 - Machine Learning Intern: Jyesta Corporate Entity / E-Cell IIT Roorkee
-- Active Participant in Hackathons & Technical Competitions
+- Active Participation in Hackathons & Technical Competitions
 =====================================================
 `;
-    const blob = new Blob([resumeContent], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'Rakesh_Biswal_Resume.txt';
+    link.download = `${personal.name.replace(/\s+/g, '_')}_Resume.txt`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -74,7 +72,7 @@ EXPERIENCE & ACTIVITIES:
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto select-none">
         {/* Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -86,99 +84,91 @@ EXPERIENCE & ACTIVITIES:
 
         {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          initial={{ opacity: 0, scale: 0.95, y: 15 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 20 }}
+          exit={{ opacity: 0, scale: 0.95, y: 15 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-2xl bg-[#090e1d] border border-cyan-500/30 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(0,245,255,0.15)] z-10 max-h-[90vh] overflow-y-auto"
+          className="relative w-full max-w-xl bg-[#0C0E13] border border-white/10 rounded-3xl p-6 sm:p-8 shadow-luxury z-10 max-h-[90vh] overflow-y-auto"
         >
           {/* Header */}
-          <div className="flex items-center justify-between pb-6 border-b border-white/10">
+          <div className="flex items-center justify-between pb-5 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-neonCyan/10 border border-neonCyan/30 text-neonCyan">
+              <div className="p-2 rounded-xl bg-white/5 text-accentBlue">
                 <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-display font-bold text-xl text-white">
-                  Curriculum Vitae
+                <h3 className="font-display font-bold text-lg text-white">
+                  CURRICULUM VITAE
                 </h3>
-                <p className="text-xs font-mono text-gray-400">
-                  {portfolioData.owner.name} · {portfolioData.owner.title}
+                <p className="text-xs font-mono text-textMuted">
+                  {personal.name} · {personal.education.degree}
                 </p>
               </div>
             </div>
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-colors"
+              className="p-1.5 rounded-lg text-textMuted hover:text-white transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {/* Quick Snapshot Content */}
-          <div className="py-6 space-y-6">
-            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
-              <div className="flex items-center gap-2 text-neonCyan text-xs font-mono uppercase tracking-wider">
-                <GraduationCap className="w-4 h-4" />
-                <span>Education Background</span>
-              </div>
-              <h4 className="font-semibold text-white text-base">
-                {portfolioData.owner.degree}
+          {/* Quick Snapshot */}
+          <div className="py-6 space-y-5">
+            <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-accentBlue">
+                ACADEMIC CREDENTIALS
+              </span>
+              <h4 className="text-sm font-semibold text-white">
+                {personal.education.degree}
               </h4>
-              <p className="text-sm text-gray-400">
-                {portfolioData.owner.university}
+              <p className="text-xs text-textMuted">
+                {personal.education.institution}, {personal.education.location}
               </p>
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 text-neonMagenta text-xs font-mono uppercase tracking-wider">
-                <Code className="w-4 h-4" />
-                <span>Core Proficiencies</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
+            <div className="space-y-2">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-textMuted">
+                CORE TECHNICAL COMPETENCIES
+              </span>
+              <div className="flex flex-wrap gap-1.5">
                 {[
-                  "React.js", "Node.js", "Python", "Machine Learning", 
-                  "OpenCV", "C++", "Java", "Tailwind CSS", "Three.js", 
-                  "Git & GitHub", "REST APIs", "Full-Stack Development"
-                ].map((skill) => (
+                  'React.js', 'Node.js', 'JavaScript', 'Python', 'C++', 'Java',
+                  'HTML/CSS', 'Machine Learning', 'Artificial Intelligence',
+                  'Full-Stack Development', 'Git & GitHub', 'VS Code',
+                ].map((s) => (
                   <span
-                    key={skill}
-                    className="px-3 py-1 rounded-lg text-xs font-mono bg-white/5 border border-white/10 text-gray-300"
+                    key={s}
+                    className="px-2.5 py-1 rounded-md text-xs font-mono bg-white/5 text-accentSilver border border-white/5"
                   >
-                    {skill}
+                    {s}
                   </span>
                 ))}
               </div>
             </div>
 
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-neonCyan/10 to-neonMagenta/10 border border-white/10 space-y-1">
-              <div className="flex items-center gap-2 text-xs font-mono text-neonCyan">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Professional Objective</span>
-              </div>
-              <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
-                Aiming to leverage strong algorithmic logic, full-stack web craftsmanship, and machine learning models to solve complex real-world engineering challenges.
-              </p>
-            </div>
+            <p className="text-xs text-textMuted font-sans leading-relaxed pt-2">
+              {personal.aboutText[2]}
+            </p>
           </div>
 
-          {/* Modal Actions */}
+          {/* Footer Actions */}
           <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center gap-3 justify-end">
             <button
               onClick={handleCopyEmail}
-              className="w-full sm:w-auto px-4 py-2.5 rounded-xl text-xs font-mono text-gray-300 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-4 py-2.5 rounded-full text-xs font-mono text-accentSilver border border-white/10 hover:border-white/30 transition-all flex items-center justify-center gap-2"
             >
-              {copied ? <Check className="w-4 h-4 text-neonGreen" /> : <Copy className="w-4 h-4" />}
-              <span>{copied ? 'Email Copied!' : 'Copy Direct Email'}</span>
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copied ? 'COPIED' : 'COPY EMAIL'}</span>
             </button>
 
             <button
               onClick={handleDownload}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-neonCyan via-neonPurple to-neonMagenta hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(0,245,255,0.3)]"
+              className="w-full sm:w-auto px-5 py-2.5 rounded-full text-xs font-mono font-semibold text-darkBg bg-white hover:bg-accentSilver transition-all flex items-center justify-center gap-2 shadow-luxury"
             >
-              <Download className="w-4 h-4" />
-              <span>Download Resume</span>
+              <Download className="w-3.5 h-3.5" />
+              <span>DOWNLOAD RESUME</span>
             </button>
           </div>
         </motion.div>

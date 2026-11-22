@@ -1,53 +1,47 @@
 import React, { useState } from 'react';
-import { AnimatePresence } from 'framer-motion';
-import Preloader from './components/Preloader';
+import ThreeCanvas from './components/ThreeCanvas';
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
-import MarqueeText from './components/MarqueeText';
 import ResumeModal from './components/ResumeModal';
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Projects from './sections/Projects';
-import Experience from './sections/Experience';
+import Education from './sections/Education';
 import GithubSection from './sections/GithubSection';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
   const [resumeOpen, setResumeOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-100 selection:bg-neonCyan/30 selection:text-neonCyan relative overflow-x-hidden">
-      {/* Cinematic Initial Preloader */}
-      <AnimatePresence>
-        {loading && <Preloader onComplete={() => setLoading(false)} />}
-      </AnimatePresence>
+    <div className="min-h-screen bg-[#08090C] text-[#F8FAFC] relative overflow-x-hidden selection:bg-accentBlue/20 selection:text-accentBlue">
+      {/* Complete Persistent 3D WebGL Environment */}
+      <ThreeCanvas />
 
-      {/* Award-style custom fluid cursor */}
+      {/* Luxury Custom Follower Cursor */}
       <CustomCursor />
 
-      {/* Main Experience (revealed cleanly) */}
-      {!loading && (
-        <>
-          <Navbar onOpenResume={() => setResumeOpen(true)} />
-          <main>
-            <Hero onOpenResume={() => setResumeOpen(true)} />
-            <MarqueeText />
-            <About />
-            <Skills />
-            <Projects />
-            <Experience />
-            <GithubSection />
-            <Contact />
-          </main>
-          <Footer />
+      {/* Floating 3D Navigation Bar */}
+      <Navbar onOpenResume={() => setResumeOpen(true)} />
 
-          {/* Interactive Resume View/Download Modal */}
-          <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
-        </>
-      )}
+      {/* Main Experience Flow */}
+      <main className="relative z-10">
+        <Hero onOpenResume={() => setResumeOpen(true)} />
+        <About />
+        <Skills />
+        <Projects />
+        <Education />
+        <GithubSection />
+        <Contact />
+      </main>
+
+      {/* Footer */}
+      <Footer />
+
+      {/* Interactive Resume View/Download Modal */}
+      <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
     </div>
   );
 }
